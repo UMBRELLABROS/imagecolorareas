@@ -1,2 +1,2 @@
 # imagecolorareas
-find areas for scetches
+find areas for sketches
