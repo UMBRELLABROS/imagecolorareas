@@ -1,0 +1,5 @@
+docker build -t html-server-image:v1 .
+
+docker images
+
+docker run -d -p 8090:80 html-server-image:v1

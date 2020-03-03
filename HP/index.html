@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+  <body>
+    <p>Image to use:</p>
+
+    <img id="scream" src="misc/tiger.jpg" alt="The Scream" />
+
+    <p>Canvas:</p>
+
+    <canvas id="myCanvas" style="border:1px solid #d3d3d3;">
+      Your browser does not support the HTML5 canvas tag.
+    </canvas>
+
+    <script>
+      window.onload = function() {
+        var canvas = document.getElementById("myCanvas");
+        var ctx = canvas.getContext("2d");
+
+        // draw image
+        var img = document.getElementById("scream");
+        img.crossOrigin = "Anonymous";
+        img.setAttribute("crossOrigin", "");
+        canvas.width = img.width;
+        canvas.heught = img.height;
+        ctx.drawImage(img, 0, 0);
+
+        // Image pixels
+        var imgData = ctx.getImageData(30, 30, 50, 50);
+        red = imgData.data[0];
+        green = imgData.data[1];
+        blue = imgData.data[2];
+        alpha = imgData.data[3];
+        console.log(red + " " + green + " " + blue + " " + alpha);
+      };
+    </script>
+  </body>
+</html>
