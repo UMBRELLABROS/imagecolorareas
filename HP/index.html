@@ -21,17 +21,75 @@
         img.crossOrigin = "Anonymous";
         img.setAttribute("crossOrigin", "");
         canvas.width = img.width;
-        canvas.heught = img.height;
+        canvas.height = img.height;
         ctx.drawImage(img, 0, 0);
 
+        var r, g, b, a;
         // Image pixels
-        var imgData = ctx.getImageData(30, 30, 50, 50);
-        red = imgData.data[0];
-        green = imgData.data[1];
-        blue = imgData.data[2];
-        alpha = imgData.data[3];
-        console.log(red + " " + green + " " + blue + " " + alpha);
+        for (var col = 0; col < canvas.width; col++) {
+          // x
+          for (var row = 0; row < canvas.height; row++) {
+            // y
+            var imgData = ctx.getImageData(col, row, 1, 1);
+            var red = imgData.data[0];
+            var green = imgData.data[1];
+            var blue = imgData.data[2];
+            var alpha = imgData.data[3];
+
+            var match = bestMatch(red, green, blue, alpha);
+            var r = match[0];
+            var g = match[1];
+            var b = match[2];
+            var a = match[3];
+
+            ctx.fillStyle =
+              "rgba(" + r + "," + g + "," + b + "," + a / 255 + ")";
+            ctx.fillRect(col, row, 1, 1);
+          }
+        }
+        // console.log(red + " " + green + " " + blue + " " + alpha);
       };
+
+      // list colors
+      var colors = [
+        [255, 0, 0, 255],
+        [0, 255, 0, 255],
+        [0, 0, 255, 255],
+        [0, 0, 0, 255],
+        [255, 255, 255, 255]
+      ];
+
+      // compare colors to find best match
+      function bestMatch(r, g, b, a) {
+        var values = [];
+        for (var i = 0; i < colors.length; i++) {
+          var color = colors[i];
+          var diff1 = (r - color[0]) * (r - color[0]);
+          var diff2 = (g - color[1]) * (g - color[1]);
+          var diff3 = (b - color[2]) * (b - color[2]);
+          values.push(diff1 + diff2 + diff3);
+        }
+        var index = indexOfMin(values);
+        return colors[index];
+      }
+
+      function indexOfMin(arr) {
+        if (arr.length === 0) {
+          return -1;
+        }
+
+        var min = arr[0];
+        var minIndex = 0;
+
+        for (var i = 1; i < arr.length; i++) {
+          if (arr[i] < min) {
+            minIndex = i;
+            max = arr[i];
+          }
+        }
+
+        return minIndex;
+      }
     </script>
   </body>
 </html>
