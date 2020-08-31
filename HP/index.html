@@ -3,15 +3,18 @@
   <body>
     <p>Image to use:</p>
 
-    <img id="scream" src="misc/lani.jpg" alt="The Scream" />
+    <img id="scream" src="misc/tiger.jpg" alt="The Scream" />
 
     <p>Canvas:</p>
+    <div id='status'></div>
 
     <canvas id="myCanvas" style="border:1px solid #d3d3d3;">
       Your browser does not support the HTML5 canvas tag.
     </canvas>
 
     <script>
+      
+
       window.onload = function() {
         var canvas = document.getElementById("myCanvas");
         var ctx = canvas.getContext("2d");
@@ -24,11 +27,40 @@
         canvas.height = img.height;
         ctx.drawImage(img, 0, 0);
 
-        var r, g, b, a;
-        // Image pixels
-        for (var col = 0; col < canvas.width; col++) {
+        // calculation last very long 
+        // so split the image in small sqares
+        var step=50;
+        
+        var range={
+          l:0,
+          t:0,
+          w:step,
+          h:step
+        }
+
+        // loop from left to right
+        var col=0
+        while ((range.l+step) < canvas.width) {
+          //drawSqare(canvas,ctx, range);
+          // setTimeout(() => {  drawSqare(canvas,ctx, range); }, 1000);
+          setTimeout(drawSqare(canvas,ctx, range), 300); 
+
+          // write a comment
+          document.getElementById('status').innerHTML=col++;
+          range.l+=step;
+          range.w+=step;
+        }
+
+        
+       
+        // console.log(red + " " + green + " " + blue + " " + alpha);
+      };
+
+function drawSqare(canvas,ctx, range){
+ // Image pixels
+ for (var col = range.l; col < range.w; col++) {
           // x
-          for (var row = 0; row < canvas.height; row++) {
+          for (var row = range.t; row < range.h; row++) {
             // y
             var imgData = ctx.getImageData(col, row, 1, 1);
             var red = imgData.data[0];
@@ -47,12 +79,12 @@
             ctx.fillRect(col, row, 1, 1);
           }
         }
-        // console.log(red + " " + green + " " + blue + " " + alpha);
-      };
+}
+
 
       // list colors
       var colors = [
-        [132, 123, 111, 255],
+        [100, 91, 89, 255],
         [255, 198, 8, 255],
         [255, 220, 187, 255],
         [255, 160, 112, 255],

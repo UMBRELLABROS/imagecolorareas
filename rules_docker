@@ -2,4 +2,15 @@ docker build -t html-server-image:v1 .
 
 docker images
 
+# automatic name (do not use)
 docker run -d -p 8090:80 html-server-image:v1
+
+# mount  a host folder to the container
+docker run -d --name jsimage -v /mnt/hgfs/www/imagecolorareas/HP:/usr/share/nginx/html -p 8090:80 html-server-image:v1 
+
+# without mount
+docker run -d --name jsimage  -p 8090:80 html-server-image:v1 
+
+docker stop jsimage
+
+docker rm jsimage
